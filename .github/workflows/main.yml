@@ -1,0 +1,40 @@
+name: CI Pasco Segurity
+
+# Ejecuta el workflow en cada push o pull request en la rama main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    # Define el tipo de máquina que usará GitHub Actions (Ubuntu)
+    runs-on: ubuntu-latest
+
+    # Define los pasos a seguir para la CI
+    steps:
+    # Paso 1: Checkout del código del repositorio
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Paso 2: Instalar Flutter
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.0.0' # Puedes ajustar la versión de Flutter según necesites
+
+    # Paso 3: Instalar las dependencias de Flutter
+    - name: Install dependencies
+      run: flutter pub get
+
+    # Paso 4: Ejecutar los tests de Flutter
+    - name: Run tests
+      run: flutter test
+
+    # Paso 5 (opcional): Compilar la app (si quieres validar que la app se construya correctamente)
+    - name: Build APK
+      run: flutter build apk --release
